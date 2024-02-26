@@ -4,8 +4,7 @@ module ALU( read_data1, ALU_control, Mux, zero, ALU_result);
 	
 	output logic [31:0] ALU_result;
 	output logic zero;
-	output logic ALex;
-	
+
 	always_comb begin 
 		case (ALU_control)
 			4'b0000: begin zero = 0;
