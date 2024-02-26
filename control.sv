@@ -1,4 +1,4 @@
-module control(opcode, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite);
+module control(opcode, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite,PC4toReg);
     input logic [6:0] opcode;
     output logic Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite;
     output logic [1:0] ALUOp;
@@ -15,6 +15,7 @@ module control(opcode, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWr
                     ALUSrc = 0;
                     RegWrite = 1;
                     ALUOp = 2'b10;
+                    PC4toReg = 0;
                 end 
         i_format: begin 
                     case(opcode) 
@@ -26,6 +27,7 @@ module control(opcode, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWr
                             ALUSrc = 1;
                             RegWrite = 1;
                             ALUOp = 2'b00;
+                            PC4toReg =0;
                         end
                         7'b0010011: begin //addi
                             Branch = 0;
@@ -35,6 +37,7 @@ module control(opcode, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWr
                             ALUSrc = 1;
                             RegWrite = 1;
                             ALUOp = 2'b00;
+                            PC4toReg =0;
                         end
                     endcase 
                 end
@@ -48,6 +51,7 @@ module control(opcode, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWr
                             ALUSrc = 1;
                             RegWrite = 0;
                             ALUOp = 2'b00;
+                            PC4toReg = 0;
                         end
                         default: begin 
                             Branch = 0;
@@ -57,6 +61,7 @@ module control(opcode, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWr
                             ALUSrc = 1;
                             RegWrite = 0;
                             ALUOp = 2'b00;
+                            PC4toReg = 0;
                         end
                     endcase 
                 end
@@ -68,6 +73,7 @@ module control(opcode, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWr
                     ALUSrc = 0;
                     RegWrite = 0;
                     ALUOp = 2'b01;
+                    PC4toReg = 0;
                 end
         //j_format: begin //jal
                   //  Branch = 0;
@@ -78,7 +84,7 @@ module control(opcode, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWr
                   //  RegWrite = 1;
                   //  ALUOp = 2'bxx;
                 //end 
-        default: r_format: begin 
+        default:  begin 
                     Branch = 0;
                     MemRead = 0;
                     MemtoReg = 0;
