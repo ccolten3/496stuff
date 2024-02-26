@@ -69,15 +69,27 @@ module control(opcode, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWr
                     RegWrite = 0;
                     ALUOp = 2'b01;
                 end
-        j_format: begin //jal
+        //j_format: begin //jal
+                  //  Branch = 0;
+                  //  MemRead = 0;
+                  //  MemtoReg = 0;
+                  //  MemWrite = 0;
+                  //  ALUSrc = 1'bx;
+                  //  RegWrite = 1;
+                  //  ALUOp = 2'bxx;
+                //end 
+        default: r_format: begin 
                     Branch = 0;
                     MemRead = 0;
                     MemtoReg = 0;
                     MemWrite = 0;
-                    ALUSrc = 1'bx;
+                    ALUSrc = 0;
                     RegWrite = 1;
-                    ALUOp = 2'bxx;
-                end 
+                    ALUOp = 2'b10;
+                end
+        endcase 
+    end 
+endmodule
         
 
         
