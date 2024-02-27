@@ -12,8 +12,8 @@ module core32(
     );
 
 	logic [31:0] PC_in, PC_out, instr, write_data, read_data1, read_data2;
-	logic [31:0] immediate_gen, ALU_mux_in;
-	logic Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite, PC4toReg;
+	logic [31:0] immediate_gen, ALU_mux_in, ALU_result, data_mem_out;
+	logic Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite, PC4toReg, zero;
 	logic [1:0] ALUOp;
 	
 	//functions for determining instruction formating from risc32_starter.sv
@@ -27,6 +27,7 @@ module core32(
 	//program counter
 	program_counter PC (.clk, .reset, .PC_in, .PC_out);
 	assign inst_mem_req.addr = PC_out;
+	assign inst_mem_req.valid = 1'b1;
 	
 	
 	//registers
@@ -44,11 +45,21 @@ module core32(
 	
 	//ALU control logic
 	ALU_control AlU_cont(.ALUOp, func7, func3, ALU_control);
-
-
-
-
-
+	
+	//ALU
+	ALU ALU(.read_data1, .ALU_control, .Mux(ALU_mux_in), .zero, .ALU_result);
+	
+	assign data_mem_req.do_write = MemWrite;
+	assign data_mem_reg.do_read = MemRead;
+	assign data_mem_reg.addr = ALU_result;
+	assign data_mem_req.data = read_data2;
+	assign data_mem_req.valid = 1'b1;
+	// assign data_mem_req.dummy = 
+	
+	assign data_mem_out = data_mem_rsp.data
+	mux3_1_32 data_out_mux (.A(data_mem_out), .B(ALU_result), .C(PC4), .sel1(MemtoReg), .sel2(PC4toReg), .out(write_data);
+	
+	
 
 endmodule
 
