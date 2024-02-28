@@ -3,7 +3,7 @@ module control(opcode, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWr
     output logic Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite;
     output logic [1:0] ALUOp;
 
-    instr_format format = decode32_format(opcode[4:0]);
+    instr_format format = decode32_format(opcode[6:2]);
 
     always_comb begin 
         case(format)
