@@ -1,9 +1,15 @@
+`include "memory_io.sv"
+`include "riscv32_starter.sv"
 module top(input clk, input reset, output logic halt);
 
 memory_io_req 	inst_mem_req;
 memory_io_rsp 	inst_mem_rsp;
 memory_io_req 	data_mem_req;
 memory_io_rsp 	data_mem_rsp;
+
+localparam logic false = 0;
+localparam logic true = 1;
+
 
 core32 core(
 	.clk(clk)
@@ -28,7 +34,7 @@ memory #(
     ) code_mem (
     .clk(clk)
     ,.req(inst_mem_req)
-    ,.rsp(inst_mem_rsp)
+    ,.rsp_q(inst_mem_rsp)
     );
 
 memory #(
@@ -41,7 +47,7 @@ memory #(
     ) data_mem (
     .clk(clk)
     ,.req(data_mem_req)
-    ,.rsp(data_mem_rsp)
+    ,.rsp_q(data_mem_rsp)
     );
 
 always_ff @(posedge clk)
@@ -56,5 +62,31 @@ always_ff @(posedge clk)
 	else
 		halt <= false;
 
-
 endmodule
+
+
+
+module top_tb();
+	logic clk, reset;
+	logic hault;
+	
+	top dut(clk, reset, hault);
+	
+	parameter CLOCK_PERIOD=100;
+	initial begin
+		clk <= 0;
+		forever #(CLOCK_PERIOD/2) clk <= ~clk; // Forever toggle the clock
+	end
+	// Set up the inputs to the design. Each line is a clock cycle.
+	initial begin
+		reset <= 1; @(posedge clk);
+		reset <= 0;	repeat(50) @(posedge clk);
+		repeat(50)	@(posedge clk);
+		
+		$stop; // End the simulation.
+	end
+endmodule
+		
+	
+			
+			
