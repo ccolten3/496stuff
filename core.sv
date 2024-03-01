@@ -14,8 +14,8 @@ module core32(
     );
 
 	logic [31:0] PC_in, PC_out, instr, write_data, read_data1, read_data2;
-	logic [31:0] immediate_gen, ALU_mux_in, ALU_result, data_mem_out, PC4, PC_imm;
-	logic Branch, MemtoReg, ALUSrc, RegWrite, PC4toReg, zero, valid ;
+	logic [31:0] immediate_gen, ALU_mux_in,ALU_mux1_in, ALU_result, data_mem_out, PC4, PC_imm;
+	logic Branch, MemtoReg, ALUSrc, ALUSrd, RegWrite, PC4toReg, zero, valid ;
 	logic [1:0] ALUOp;
 	logic [3:0] ALU_control, ALU_temp, MemRead, MemWrite;
 	opcode_q opcode;
@@ -52,11 +52,15 @@ module core32(
 	
 	
 	//control logic
-	control control(.instr, .Branch, .MemRead, .MemtoReg, .ALUOp, .MemWrite, .ALUSrc, .RegWrite,.PC4toReg);
+	//control control(.instr, .Branch, .MemRead, .MemtoReg, .ALUOp, .MemWrite, .ALUSrc, .ALUSrd, .RegWrite,.PC4toReg);
+	control control(.instr, .read_data1, .read_data2, .Branch, .MemRead, .MemtoReg, .ALUOp, .MemWrite, .ALUSrc, .ALUSrd, .RegWrite,.PC4toReg);
 	//control control(.opcode(opcode), .format(format), .Branch, .MemRead, .MemtoReg, .ALUOp, .MemWrite, .ALUSrc, .RegWrite,.PC4toReg);
 
+	
 	// muxed registers output
+	mux2_1_32 reg1_mux (.A(PC_out), .B(read_data1), .sel(ALUSrd), .out(ALU_mux1_in));
 	mux2_1_32 reg_mux (.A(immediate_gen), .B(read_data2), .sel(ALUSrc), .out(ALU_mux_in));
+	
 	
 	
 	//ALU control logic
@@ -66,7 +70,7 @@ module core32(
 	ALU_ctrl AlU_cont (.ALUOp, .func7, .func3, .ALU_control(ALU_temp));
 	assign ALU_control = ALU_temp;
 	//ALU
-	ALU ALU(.read_data1, .ALU_control, .Mux(ALU_mux_in), .zero, .ALU_result);
+	ALU ALU(.read_data1(ALU_mux1_in), .ALU_control, .Mux(ALU_mux_in), .zero, .ALU_result);
 	
 	assign data_mem_req.do_write = MemWrite;
 	assign data_mem_req.do_read = MemRead;
@@ -79,23 +83,10 @@ module core32(
 	mux3_1_32 data_out_mux (.A(data_mem_out), .B(ALU_result), .C(PC4), .sel1(MemtoReg), .sel2(PC4toReg), .out(write_data));
 	
 	
-	adder imm_plus_PC (.A(immediate_gen), .B(PC_out), .added(PC_imm));
+	//adder imm_plus_PC (.A(immediate_gen), .B(PC_out), .added(PC_imm));
 	
-	mux2_1_32 pcmux(.A(PC_imm), .B(PC4), .sel(Branch & zero), .out(PC_in));
+	mux2_1_32 pcmux(.A(ALU_result), .B(PC4), .sel(Branch), .out(PC_in));
 	
-//	logic [1:0] delay_one;
-//	always_ff @(negedge clk) begin 
-//		if (reset) begin 
-//			inst_mem_req.valid <= 1;
-//			delay_one <= 0;
-//		end else if (MemtoReg & (delay_one!=2'b10)) begin
-//			inst_mem_req.valid <= 0;
-//			delay_one <= delay_one+1;
-//		end else begin
-//			inst_mem_req.valid <= 1;
-//			delay_one <= 0;
-//		end 
-//	end 
 endmodule 
 
 	

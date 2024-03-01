@@ -33,7 +33,7 @@ module memory #(
 	 logic [7:0] opcode_mem;
 
     // delayed response by 1 cycle
-    //memory_io_rsp   rsp;
+    //memory_io_rsp   rsp_q;
 
     initial begin
         // Vivado simulation fills the BRAM with X's and this makes a complete mess of
@@ -57,9 +57,9 @@ module memory #(
 	 
 	 assign opcode_mem = data0[req.addr[size_l2 - 1:2]];
     always @(*) begin
-		 if (req.valid) begin 
-			  //rsp <= memory_io_no_rsp;
-			  //rsp_q <= rsp;
+		 //if (req.valid) begin 
+//			  rsp_q <= memory_io_no_rsp;
+//			  rsp_q <= rsp_q;
 			  if (req.valid) begin
 					if (is_any_byte(req.do_read)) begin
 						 if (enable_rsp_addr)
@@ -87,8 +87,13 @@ module memory #(
 						1'b0: rsp.data[31:24] <= 8'b0;
 					endcase 
 					rsp.valid <= 1'b1;
-					
-					end else if (is_any_byte(req.do_write)) begin
+				end 
+			end 
+		end 
+		
+		always @(posedge clk) begin
+			if (req.valid) begin
+				if (is_any_byte(req.do_write)) begin
 						 rsp.valid <= 1'b1;
 						 if (req.do_write[0]) data0[req.addr[size_l2 - 1:2]] <= req.data[7:0];
 						 if (req.do_write[1]) data1[req.addr[size_l2 - 1:2]] <= req.data[15:8];
@@ -101,7 +106,7 @@ module memory #(
 						 rsp.addr <= req.addr;
 			  end
 		  end
-    end
+
 
 endmodule
 
