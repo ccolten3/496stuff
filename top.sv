@@ -1,3 +1,4 @@
+
 `include "memory_io.sv"
 `include "riscv32_starter.sv"
 module top(input clk, input reset, output logic halt);
@@ -34,7 +35,7 @@ memory #(
     ) code_mem (
     .clk(clk)
     ,.req(inst_mem_req)
-    ,.rsp_q(inst_mem_rsp)
+    ,.rsp(inst_mem_rsp)
     );
 
 memory #(
@@ -47,7 +48,7 @@ memory #(
     ) data_mem (
     .clk(clk)
     ,.req(data_mem_req)
-    ,.rsp_q(data_mem_rsp)
+    ,.rsp(data_mem_rsp)
     );
 
 always_ff @(posedge clk)
