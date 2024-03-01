@@ -18,14 +18,20 @@ module core32(
 	logic Branch, MemtoReg, ALUSrc, RegWrite, PC4toReg, zero, valid ;
 	logic [1:0] ALUOp;
 	logic [3:0] ALU_control, MemRead, MemWrite;
-	
+	opcode_q opcode;
+	instr_format format;
+	funct7 func7;
+	funct3 func3;
 	
 	//functions for determining instruction formating from risc32_starter.sv
 	assign instr = inst_mem_rsp.data; // define instructions
 	
-	opcode_q opcode = decode32_opcode_q(instr); //define opcode_q
+	//always_comb begin 
+		
+	assign opcode = decode32_opcode_q(instr); //define opcode_q
 	
-	instr_format format = decode32_format(opcode);// define format
+	assign format = decode32_format(opcode);// define format
+	//end
 	
 	
 	//program counter
@@ -53,8 +59,8 @@ module core32(
 	
 	
 	//ALU control logic
-	funct7 func7 = decode32_funct7(instr, format);
-	funct3 func3 = decode32_funct3(instr);
+	assign func7 = decode32_funct7(instr, format);
+	assign func3 = decode32_funct3(instr);
 	
 	ALU_ctrl AlU_cont(.ALUOp, .func7, .func3, .ALU_control);
 	
