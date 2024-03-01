@@ -47,29 +47,29 @@ module memory #(
         end
     end
 
-    always @(posedge clk) begin
-        rsp <= memory_io_no_rsp;
-        rsp_q <= rsp;
+    always @(*) begin
+        rsp = memory_io_no_rsp;
+        rsp_q = rsp;
         if (req.valid) begin
             if (is_any_byte(req.do_read)) begin
                 if (enable_rsp_addr)
-                    rsp.addr <= req.addr;
-                rsp.data[7:0] <= data0[req.addr[size_l2 - 1:2]];
-                rsp.data[15:8] <= data1[req.addr[size_l2 - 1:2]];
-                rsp.data[23:16] <= data2[req.addr[size_l2 - 1:2]];
-                rsp.data[31:24] <= data3[req.addr[size_l2 - 1:2]];
-                rsp.valid <= 1'b1;
+                    rsp.addr = req.addr;
+                rsp.data[7:0] = data0[req.addr[size_l2 - 1:2]];
+                rsp.data[15:8] = data1[req.addr[size_l2 - 1:2]];
+                rsp.data[23:16] = data2[req.addr[size_l2 - 1:2]];
+                rsp.data[31:24] = data3[req.addr[size_l2 - 1:2]];
+                rsp.valid = 1'b1;
             end else if (is_any_byte(req.do_write)) begin
-                rsp.valid <= 1'b1;
-                if (req.do_write[0]) data0[req.addr[size_l2 - 1:2]] <= req.data[7:0];
-                if (req.do_write[1]) data1[req.addr[size_l2 - 1:2]] <= req.data[15:8];
-                if (req.do_write[2]) data2[req.addr[size_l2 - 1:2]] <= req.data[23:16];
-                if (req.do_write[3]) data3[req.addr[size_l2 - 1:2]] <= req.data[31:24];
+                rsp.valid = 1'b1;
+                if (req.do_write[0]) data0[req.addr[size_l2 - 1:2]] = req.data[7:0];
+                if (req.do_write[1]) data1[req.addr[size_l2 - 1:2]] = req.data[15:8];
+                if (req.do_write[2]) data2[req.addr[size_l2 - 1:2]] = req.data[23:16];
+                if (req.do_write[3]) data3[req.addr[size_l2 - 1:2]] = req.data[31:24];
             end else begin
-                rsp.valid <= 1'b0;
+                rsp.valid = 1'b0;
             end
             if (enable_rsp_addr)
-                rsp.addr <= req.addr;
+                rsp.addr = req.addr;
         end
     end
 
