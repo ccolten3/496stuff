@@ -1,8 +1,8 @@
-// This file controls all control signals for the single cycle cpu
+// This file controls all control signals for the CPU
 
 `include "riscv32_starter.sv"
 module control(instr, read_data1, read_data2, jump, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, ALUSrd, RegWrite,PC4toReg);
-    //asign inputs and outputs
+    // assign inputs and outputs
 	 input logic [31:0] instr, read_data1, read_data2;
 	 opcode_q opcode;
 	 instr_format format;
@@ -32,7 +32,7 @@ module control(instr, read_data1, read_data2, jump, Branch, MemRead, MemtoReg, A
 		 else begin
 		
         case(format)
-		  // assign r formot control signals
+		  // assign r format control signals
         r_format: begin 
                     Branch = 1'b0;
                     MemRead = 4'b0000;
@@ -67,7 +67,7 @@ module control(instr, read_data1, read_data2, jump, Branch, MemRead, MemtoReg, A
 										default: MemRead = 4'b1111;
 									endcase
                         end
-                        7'b0010011: begin //addi
+                        7'b0010011: begin // addi
                             Branch = 0;
                             MemRead = 4'b0000;
                             MemtoReg = 0;
@@ -94,7 +94,7 @@ module control(instr, read_data1, read_data2, jump, Branch, MemRead, MemtoReg, A
                     endcase 
                 end
         s_format: begin 
-		  // assign s format controls
+		  // assign format controls
                     case(instr[6:0]) 
                         7'b0100011: begin //store
                             Branch = 0;
@@ -129,7 +129,7 @@ module control(instr, read_data1, read_data2, jump, Branch, MemRead, MemtoReg, A
                         end
                     endcase 
                 end
-        b_format: begin //beq
+        b_format: begin // beq
 			// assign branch controls
                     Branch = 1;
                     MemRead = 4'b0000;
@@ -143,7 +143,7 @@ module control(instr, read_data1, read_data2, jump, Branch, MemRead, MemtoReg, A
                     PC4toReg = 0;
 						  jump = 0;
                 end
-        j_format: begin //jal
+        j_format: begin // jal
 		  // assign j format controls
                     Branch = 0;
                     MemRead = 4'b0000;
@@ -157,6 +157,7 @@ module control(instr, read_data1, read_data2, jump, Branch, MemRead, MemtoReg, A
 						  jump = 1;
                 end 
         default:  begin 
+		// assign default controls
                     Branch = 0;
                     MemRead = 4'b0000;
                     MemtoReg = 0;
