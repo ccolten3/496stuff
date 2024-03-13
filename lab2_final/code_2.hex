@@ -1,0 +1,21 @@
+00350513    # addi a0, a0, 0          ; No operation (NOP), just copying a0 to a0
+ff810113    # addi sp, sp, -8         ; Decrement stack pointer by 8
+00112223    # sw ra, 4(sp)            ; Store return address (ra) at stack pointer + 4
+Ffe50313    # addi t0, a0, -2         ; Subtract 2 from a0
+02034a63    # blt s0, a0, 32          ; Branch if s0 < a0 to PC+32 (8-byte instructions)
+fff50513    # addi a0, a0, -1         ; Subtract 1 from a0
+00a12023    # sw ra, 20(sp)           ; Store return address (ra) at stack pointer + 20
+fe9ff0ef    # jal ra, -24              ; Jump and link, set ra to return address, jump 24 bytes forward
+00012303    # lw ra, 0(sp)            ; Load word from stack pointer into return address (ra)
+00a12023    # sw ra, 20(sp)           ; Store return address (ra) at stack pointer + 20 (repeated instruction)
+Fff30513    # addi a0, a0, -1         ; Subtract 1 from a0 (similar operation as above)
+fd9ff0ef    # jal ra, -40              ; Jump and link, set ra to return address, jump 40 bytes forward
+00012283    # lw s0, 0(sp)            ; Load word from stack pointer into s0
+00550533    # add a0, a0, s0          ; Add s0 to a0
+00412083    # lw ra, 16(sp)           ; Load word from stack pointer + 16 into ra
+00810113    # addi sp, sp, 8          ; Increment stack pointer by 8
+00008067    # ret                     ; Return from subroutine
+00100513    # addi a0, a0, 1          ; Add 1 to a0
+00412083    # lw ra, 16(sp)           ; Load word from stack pointer + 16 into ra (repeated instruction)
+00810113    # addi sp, sp, 8          ; Increment stack pointer by 8 (repeated instruction)
+00008067    # ret                     ; Return from subroutine (repeated instruction)
