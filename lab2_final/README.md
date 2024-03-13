@@ -32,11 +32,16 @@
 ## Usage 
   Some of the more complicated design features of our pipeline can be seen below.
 ### Hazard Detection and Stalling 
-![image](https://github.com/ccolten3/496stuff/assets/156143216/e327f692-3c87-4e88-8b61-50d3989a2dca)
-  The image above demonstrated that our JAL instruction encode is correct the actual instruction for this is was jal x1, -20. as you can see the PC output at the next clock cycle was moved back 20 bytes or 5 instruction and the loop repeats itself we cal also see that it is writting what whould have been the next instruction address, but is now the return address into register 1.
-### BEQ
-![image](https://github.com/ccolten3/496stuff/assets/156143216/1ff298ae-c4db-4cb4-858b-a699ca95987e)
-  Similiarly with BEQ we can see that when BEQ is called and passes branch is asserted which assigned the the current instruction address plus the immediate to the input of the program counter. unlike JAL however the return adress is not saved as branching does not require a return address.
+![image](https://github.com/ccolten3/496stuff/assets/156143216/9ccf3e6f-fc4d-4459-b875-17b5a245f14b)
+  The image above demonstrated that our code will actually recognize a hazard and impliment as stall based on certan conditions. As seen above when memRead is active for the instruction in the execution stage or mem1 stage, and the write address in either of those stages is equal to rs1 or rs2 in the decode stage, a hazard is signaled and the system is stalled. As you can see the instruction accross both stages is stopped until the hazard is resolved.
+### Flushing
+![image](https://github.com/ccolten3/496stuff/assets/156143216/a5ef9640-7a3f-4c4c-92ca-1323478b03c4)
+  Our design also impliments a flushing technique where by when the program is stalled all controls are set to zero so as to not effect the state of the system while stalling occurs. once the hazard is resolved the control signals are resumed. This can be seen in the image above after the hazard detection in the previous section. 
+  Flushing is also used when jumping or branching as seen below. When an instruction address is changed it will take a few clock cycles for the decode stage to receive the new instruction and until then only null instructions are loaded into decode with all controls set to zero so as to have no effect on the system.
+![image](https://github.com/ccolten3/496stuff/assets/156143216/248d914e-edf2-4b07-9343-0bb9a94fd85d)
+### Forwarding
+![image](https://github.com/ccolten3/496stuff/assets/156143216/71a0fbfd-cb87-4067-be81-ad499bcfecea)
+  The image above demostrates our forwarding select and behavior. 'forward_b' when set to 010 enables forwarding between the execution stage mem1 stage and as you can see the ALU input of B is then set to the ALU output value of the instruction the the mem1 stage. Likewise when set to 011 forwarding is enabled between execution and mem2 stage. This too is reflected in the ALU input B.  
 ## Support 
   We were supported by the memory and riscv starter files given to us by the teaching team. With some editing the contriputed to our processors completion. We also used Chat GPT and general search as a tool for explanations of concepts and things like verilog syntax.
 ## Authors
