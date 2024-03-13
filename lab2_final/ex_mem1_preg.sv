@@ -1,3 +1,4 @@
+// execution memory register for pipelining
 `include "riscv32_starter.sv"
 module ex_mem1_preg(clk, reset, stall, flush, branch_ex,control_ex, ALU_ex, write_reg_ex, PC4_ex, write_data_ex, instr_ex, branch_addr_ex, 
 											branch_mem1,control_mem1, ALU_mem1, write_reg_mem1, PC4_mem1, write_data_mem1, instr_mem1, branch_addr_mem1); 
@@ -8,8 +9,8 @@ module ex_mem1_preg(clk, reset, stall, flush, branch_ex,control_ex, ALU_ex, writ
 	output logic [31:0] control_mem1, PC4_mem1, write_data_mem1, ALU_mem1, instr_mem1, branch_addr_mem1;
 	output logic [4:0] write_reg_mem1;
 	output logic branch_mem1;
-	//output opcode_q opcode_mem1;
 	
+	// registers for pipeline
 	always @(posedge clk) begin
 		instr_mem1 <= instr_ex;
 		if (flush) control_mem1 <= 32'h0;
