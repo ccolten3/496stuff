@@ -24,14 +24,14 @@
   We were successfully able to get homework 1 to run on our processor. After writing the data and code hex files by hand based on or implimentation from the assignment we were able to replicate the functionality of our string copy method. Waveforms of this implimentation can be seen below
 ![image](https://github.com/ccolten3/496stuff/assets/156143216/54c8b1cd-4e1c-4abc-958f-60ae159ad328)
   The image above shows the data in data memory before string copy. As you can see the data holds the strings "hello" (source) and "world" (destination).
-![image](https://github.com/ccolten3/496stuff/assets/156143216/6e0f4dd8-bd31-47e5-9e4a-2391a712afba)
-  The image above shows the data in data memory after the observed three cycles of the function. Seen below are the values of the control signals during this process. As you can see there are clear signals indicative of load byte and store byte as well as jumps and branches.
-![image](https://github.com/ccolten3/496stuff/assets/156143216/a6f7880b-180c-49d6-a5a7-fa47f8d09caf)
+![image](https://github.com/ccolten3/496stuff/assets/156143216/b6742061-e352-4d72-9bf4-ea04172410b8)
+  The image above shows the data in data memory after the observed three cycles of the function. Seen below are the values of the control signals during this process. 
 ## Homework 2
-  Unfortunately we were unable to get homework 2 working in time however this is not an matter of incomplete or faulty instruction encoding. We simply ran out of time to write out all the hex and data files by hand before the deadline. Since we will be demoing tomorrow we expect that getting homework 2 working will just be a matter of writing the correct hex code and running it through our processor. 
+  Unfortunately we were unable to get homework 2 completely working in time however we did get it pretty close. the only issue that we are really having is requarding jumps and branches and for some reason the loop never ending. seen below is just a snippet from our simulation demostrating the systems behavior when executing a jalr istruction. 
+  ![image](https://github.com/ccolten3/496stuff/assets/156143216/48e4ac1b-2364-4c68-869c-9311a6b00209)
 ## Usage 
-  Some of the more complicated instructions such as JAL and branching instructiosn are seen below.
-### JAL
+  Some of the more complicated design features of our pipeline can be seen below.
+### Hazard Detection and Stalling 
 ![image](https://github.com/ccolten3/496stuff/assets/156143216/e327f692-3c87-4e88-8b61-50d3989a2dca)
   The image above demonstrated that our JAL instruction encode is correct the actual instruction for this is was jal x1, -20. as you can see the PC output at the next clock cycle was moved back 20 bytes or 5 instruction and the loop repeats itself we cal also see that it is writting what whould have been the next instruction address, but is now the return address into register 1.
 ### BEQ
