@@ -1,3 +1,4 @@
+// simple adder module that adds first 2 params and results in the 3rd
 module adder (A, B, added);
 	input logic [31:0] A, B;
 	output logic [31:0] added;
