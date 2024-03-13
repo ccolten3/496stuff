@@ -9,8 +9,10 @@
 * registers.sv
 * control.sv
 * ALU.sv and ALU_control.sv
-* core32.sv
+* core32_7stage.sv
 * muxes.sv, addr_adder.sv, adder.sv
+* hazard_unit.sv
+* forward_unit.sv
 * all registers for different parts of the datapath are labeled with a preg at the end for the pipelining register
   The files in the project are split between three modules in top.sv: core32.sv and two declarations of the memory module given in this assignment that serve as data and instruction memory.
 * our hex files are broken into instructions to run hw 1 and all hex files with a 2 digit number ending are for homework 2
