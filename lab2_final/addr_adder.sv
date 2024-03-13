@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////
-// this module incriments the instruction address by 4 by adding 
+// this module increments the instruction address by 4 through addition
 module addr_adder(clk, toAdd, added);
 	input logic clk;
 	input logic [31:0] toAdd;
