@@ -1,3 +1,5 @@
+// core of the CPU and controls the connections between all of the parts needed for the datapath broken down into assignments
+// and connections for each section of the datapath such as execute and decode
 `include "memory_io.sv"
 `include "riscv32_starter.sv"
 module core32_7stage(
