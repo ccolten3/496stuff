@@ -1,4 +1,5 @@
 //`include "memory_io.sv"
+// decode execution register
 `include "riscv32_starter.sv"
 module dec_ex_preg(clk, reset, stall, flush, cycle_count, control_dec, read_data1_dec, read_data2_dec, PC4_dec, PC_out_dec, imm_dec, write_reg_dec, func7_dec, func3_dec, instr_dec,  
 									control_ex, read_data1_ex, read_data2_ex, PC4_ex, PC_out_ex, imm_ex, write_reg_ex, func7_ex, func3_ex, instr_ex);
@@ -14,7 +15,8 @@ module dec_ex_preg(clk, reset, stall, flush, cycle_count, control_dec, read_data
 	output logic [4:0] write_reg_ex;
 	output funct7 func7_ex;
 	output funct3 func3_ex;
-	
+
+	// registers decoding values for pipelining
 	always @(posedge clk) begin 
 		if (reset) flush_count <= 0;
 		
