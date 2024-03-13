@@ -20,10 +20,12 @@ module dec_ex_preg(clk, reset, stall, flush, cycle_count, control_dec, read_data
 		
 		
 		instr_ex <= instr_dec;
-		if ((stall  && cycle_count <3)|| flush)begin  control_ex <= 32'h0; flush_count <= 1'b1;
+		if ((stall  && cycle_count <3))begin  control_ex <= 32'h0; 
+		end else if (flush) begin  control_ex <= 32'h0; flush_count <= 1'b1;
 		end else if ((flush_count > 0)&& flush_count < 3)begin flush_count <= flush_count + 1'b1; control_ex <= 32'h0; end
 		else  
 		control_ex <= control_dec;
+		
 		read_data1_ex <= read_data1_dec;
 		read_data2_ex <= read_data2_dec;
 		PC4_ex <= PC4_dec;
